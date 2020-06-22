@@ -1,5 +1,6 @@
-import { PrimaryColumn, Column, ManyToOne, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { PrimaryColumn, Column, ManyToOne, Entity, PrimaryGeneratedColumn, OneToOne } from "typeorm";
 import { userEntity } from "src/user/user.entity";
+import { ProjectEntity } from "src/project/project.entity";
 
 @Entity('todo')
 export class TodoEntity{
@@ -20,4 +21,8 @@ export class TodoEntity{
 
     @ManyToOne(type => userEntity)
     user: number;
+
+    @ManyToOne(type => ProjectEntity)
+    project : ProjectEntity;
+
 }

@@ -11,6 +11,8 @@ import { APP_FILTER } from '@nestjs/core';
 import { HttpErrorFilter } from './shared/http-erro.filter';
 import { TodoModule } from './todo/todo.module';
 import { TodoEntity } from './todo/todo.entity';
+import { ProjectModule } from './project/project.module';
+import { ProjectEntity } from './project/project.entity';
 
 @Module({
   imports: [TypeOrmModule.forRoot({
@@ -20,10 +22,10 @@ import { TodoEntity } from './todo/todo.entity';
     username: 'root',
     password: '',
     database: 'todoList',
-    entities: [userEntity, TodoEntity
+    entities: [userEntity, TodoEntity, ProjectEntity
     ],
     synchronize: true,
-  }),UserModule, TodoModule,
+  }),UserModule, TodoModule, ProjectModule,
   ],
   controllers: [AppController],
   providers: [AppService, BaseService,{ provide: APP_FILTER, useClass: HttpErrorFilter}],
