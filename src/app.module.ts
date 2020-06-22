@@ -7,6 +7,8 @@ import { AppService } from './app.service';
 import { UserModule } from './user/user.module';
 import { userEntity } from './user/user.entity';
 import { BaseService } from './shared/base.service';
+import { APP_FILTER } from '@nestjs/core';
+import { HttpErrorFilter } from './shared/http-erro.filter';
 
 @Module({
   imports: [TypeOrmModule.forRoot({
@@ -22,7 +24,7 @@ import { BaseService } from './shared/base.service';
   }),UserModule,
   ],
   controllers: [AppController],
-  providers: [AppService, BaseService,],
+  providers: [AppService, BaseService,{ provide: APP_FILTER, useClass: HttpErrorFilter}],
 
 })
 export class AppModule {
