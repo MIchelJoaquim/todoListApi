@@ -16,6 +16,9 @@ export class ProjectEntity{
     @ManyToOne(type => userEntity)
     owner: userEntity;
 
+    @Column()
+    ownerId: number;
+
     @ManyToMany(type => userEntity)
     @JoinTable({name : "project_has_user"})
     participantes: [userEntity]

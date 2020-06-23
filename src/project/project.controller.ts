@@ -9,25 +9,29 @@ export class ProjectController {
 
     constructor(private projectService: ProjectService){}
 
-    @Get(':id')
+    @Get()
     @UseGuards(new AuthGuard())
-    findByUser(@Param('id') id: number){
-        // console.log(user);
-        return this.projectService.findByUser(id);
+    findByUser(@User('id') userId){
+        console.log('user => '+userId);
+        return this.projectService.findByUser(userId);
     }
 
     @Post()
+    @UseGuards(new AuthGuard())
     create(@Body() project: any){
         return this.projectService.create(project);
     }
 
     @Put(':id')
-    update(@Body() project: ProjectDto, @Param('id') id: number){
-        return this.projectService.update(id, project);
+    @UseGuards(new AuthGuard())
+    update(@Body() project: Partial<ProjectDto>, @Param('id') id: number, @User('id') userId){
+        // console.log(project);
+        return this.projectService.update(id, project, userId);
     }
 
     @Delete('id')
-    delete(@Param('id') id){
-        return this.projectService.delete(id); 
+    @UseGuards(new AuthGuard())
+    delete(@Param('id') id, @User('id') userId: number){
+        return this.projectService.delete(id, userId); 
     }
 }

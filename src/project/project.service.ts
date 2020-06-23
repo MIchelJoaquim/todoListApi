@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpStatus, HttpException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ProjectEntity } from './project.entity';
 import { Repository } from 'typeorm';
@@ -11,8 +11,8 @@ export class ProjectService {
 
     private baseRelation = ['owner', 'participantes', 'todo'];
     
-    async findByUser(userId: number) {
-        return this.repository.find({ where: [userId] , relations: this.baseRelation});
+    async findByUser(ownerId: number) {
+        return await this.repository.find({ where: {"ownerId" : ownerId} , relations: this.baseRelation});
     }
 
     async create(project: {
@@ -31,12 +31,23 @@ export class ProjectService {
         return this.repository.save(pro);
     }
 
-    async update(id: number, project: any) {
+    async update(id: number, project: any, userId: number) {
+        const projectSelect = await this.repository.findOne(id);
+        this.isOwner(projectSelect, userId);
+        
         this.repository.update(id, project);
         return this.repository.findOne(id);
     }
 
-    async delete(id: number) {
+    async delete(id: number, userId: number) {
+        const projectSelect = await this.repository.findOne(id);
+        this.isOwner(projectSelect, userId);
         return this.repository.delete(id);
+    }
+
+    private isOwner(project: ProjectEntity, userId: number){
+        if(project.ownerId !== userId){
+            throw new HttpException('Incorrect User', HttpStatus.FORBIDDEN);
+        }
     }
 }
