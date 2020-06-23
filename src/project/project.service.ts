@@ -10,6 +10,7 @@ export class ProjectService {
     constructor(@InjectRepository(ProjectEntity) private repository: Repository<ProjectEntity>) { }
 
     private baseRelation = ['owner', 'participantes', 'todo'];
+    
     async findByUser(userId: number) {
         return this.repository.find({ where: [userId] , relations: this.baseRelation});
     }

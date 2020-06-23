@@ -20,7 +20,7 @@ export class HttpErrorFilter implements ExceptionFilter{
         Logger.error(`${request.method} ${request.url}`, JSON.stringify(erroResponse), 'ExceptionFilter',);
 
 
-        response.status(404).json(erroResponse);
+        response.status(status).json(erroResponse);
     }
     
 }

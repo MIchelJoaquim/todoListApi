@@ -28,7 +28,7 @@ export class UserController {
     }
 
     @Post('register')
-    create(@Body() pessoa: {username: string, password: string, role: {}}){
+    create(@Body() pessoa: {username: string, password: string}){
         return this.service.create(pessoa).catch((reason)=>{console.log(reason)});
     }
 

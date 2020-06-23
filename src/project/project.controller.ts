@@ -1,6 +1,8 @@
-import { Controller, Get, Param, Post, Body, Put, Delete } from '@nestjs/common';
+import { Controller, Get, Param, Post, Body, Put, Delete, UseGuards } from '@nestjs/common';
 import { ProjectService } from './project.service';
 import { ProjectDto } from './project.dto';
+import { AuthGuard } from 'src/shared/auth.gaurd';
+import { User } from 'src/user/user.decorator';
 
 @Controller('api/project')
 export class ProjectController {
@@ -8,7 +10,9 @@ export class ProjectController {
     constructor(private projectService: ProjectService){}
 
     @Get(':id')
+    @UseGuards(new AuthGuard())
     findByUser(@Param('id') id: number){
+        // console.log(user);
         return this.projectService.findByUser(id);
     }
 
