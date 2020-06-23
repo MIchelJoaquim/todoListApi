@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { TodoEntity } from './todo.entity';
 import { Repository } from 'typeorm';
@@ -17,15 +17,26 @@ export class TodoService {
     }
 
     async findByUser(userId: number){
-        return this.repository.find({where : {userId : "userId"}});
+        return this.repository.find({where : {"userId" : userId}});
     }
 
-    async update(id: number, todo: Partial<any>){
+    async update(id: number, todo: Partial<any>, userId: number){
+        const todoObject = await this.repository.findOne(id);
+        this.isOwner(todoObject, userId);
         await  this.repository.update(id, todo);
         return this.repository.findOne(id);
     }
 
-    async delete(id: number){
+    async delete(id: number, userId: number){
+        const todoObject = await this.repository.findOne(id);
+        this.isOwner(todoObject, userId);
         return this.repository.delete(id);
+    }
+
+    private isOwner(todo : TodoEntity, userId: number){
+        
+        if(todo.user.id === userId){
+            throw new HttpException('Incorrect user', HttpStatus.FORBIDDEN);
+        }
     }
 }

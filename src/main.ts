@@ -50,7 +50,7 @@ async function bootstrap() {
 
 
   // });
-  const PORT = 3002;
+  const PORT = 3000;
   await app.listen(PORT);
   Logger.log('Server started: ' + PORT, 'main');
 

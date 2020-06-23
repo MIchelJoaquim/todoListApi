@@ -20,7 +20,10 @@ export class TodoEntity{
     status: boolean;
 
     @ManyToOne(type => userEntity)
-    user: number;
+    user: userEntity;
+
+    @Column()
+    userId: number;
 
     @ManyToOne(type => ProjectEntity)
     project : ProjectEntity;

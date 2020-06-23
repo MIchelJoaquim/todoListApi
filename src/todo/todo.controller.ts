@@ -1,14 +1,17 @@
-import { Controller, Post, Body, Get, Param, Put, Delete } from '@nestjs/common';
+import { Controller, Post, Body, Get, Param, Put, Delete, UseGuards } from '@nestjs/common';
 import { TodoDto } from './todo.dto';
 import { TodoService } from './todo.service';
+import { AuthGuard } from 'src/shared/auth.gaurd';
+import { User } from 'src/user/user.decorator';
 
 @Controller('api/todo')
 export class TodoController {
 
     constructor(private todoService: TodoService){}
 
-    @Get(':id/user')
-    findByUser(@Param('id') id){
+    @Get()
+    @UseGuards(new AuthGuard())
+    findByUser(@User('id') id : number){
         return this.todoService.findByUser(id);
     }
 
@@ -19,12 +22,14 @@ export class TodoController {
     }
 
     @Put(':id')
-    update(@Body() todo: TodoDto, @Param('id') id){
-        return this.todoService.update(id, todo);
+    @UseGuards(new AuthGuard())
+    update(@Body() todo: TodoDto, @Param('id') id, @User('id') userId: number){
+        return this.todoService.update(id, todo, userId);
     }
 
     @Delete(':id')
-    delete(@Param('id') id){
-        return this.todoService.delete(id);
+    @UseGuards(new AuthGuard())
+    delete(@Param('id') id, @User('id') userId: number){
+        return this.todoService.delete(id, userId);
     }
 }
