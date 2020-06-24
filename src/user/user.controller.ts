@@ -5,7 +5,7 @@ import { AuthGuard } from '../shared/auth.gaurd';
 import { RolesGuard } from 'src/shared/role.gaurd';
 import { Roles } from 'src/shared/role.decorator';
 
-@Controller("user")
+@Controller("api/user")
 export class UserController {
     constructor(private service: UserService){}
 

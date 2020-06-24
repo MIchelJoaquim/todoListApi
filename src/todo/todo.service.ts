@@ -34,7 +34,7 @@ export class TodoService {
     }
 
     private isOwner(todo : TodoEntity, userId: number){
-        
+         
         if(todo.user.id === userId){
             throw new HttpException('Incorrect user', HttpStatus.FORBIDDEN);
         }
